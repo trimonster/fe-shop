@@ -1,0 +1,20 @@
+<div class="ui-g">
+  <div class="ui-g-12">
+    <app-header *ngIf="showHeader"></app-header>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-1">
+    <app-sidebar *ngIf="showSidebar"></app-sidebar>
+  </div>
+  <div class="ui-g-10">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-12">
+    <app-footer *ngIf="showFooter" fxLayout="column"></app-footer>
+  </div>
+</div>
