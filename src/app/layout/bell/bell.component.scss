@@ -1,0 +1,16 @@
+#bell-contents {
+  position: relative;
+  border: unset !important;
+  cursor: pointer;
+
+  .count-bells {
+    position: absolute;
+    background-color: #dd0031;
+    color: white;
+    border-radius: 50%;
+    font-size: 13px;
+    left: 20px;
+    top: 12px;
+    width: 20px;
+  }
+}

@@ -2,10 +2,29 @@
   Image
 </div>
 
-<div class="ui-g-4 ui-g-offset-5">
-    <div class="ui-g-8">8</div>
-    <div class="ui-g-4" >
-        <p-menubar class="userNavigationLabel" [model]="menuItems" [autoDisplay]="false">
-        </p-menubar>
+<div class="ui-g-4 ui-g-offset-5" id="abc">
+    <div class="ui-g-6">
+      6  
+    </div>
+    <div class="ui-g-2">
+      <div class="ui-g-6">
+        <app-bell [icon]="iconMess" [count]="notifications.length"></app-bell>
+      </div>
+      <div class="ui-g-6">
+        <app-bell [icon]="iconBell" [count]="notifications.length"></app-bell>
+      </div>
+    </div>
+    <div class="ui-g-4" id="userNavigationLabel">
+        <div class="ui-g-4">
+          <a target="_blank" href="https://www.hindubhagwan.com/Gallery/images/portfolio/full/cristiano_ronaldo_image.jpg">
+            <img src="https://www.hindubhagwan.com/Gallery/images/portfolio/full/cristiano_ronaldo_image.jpg" 
+              alt="Paris">
+          </a>
+        </div>
+        <div class="ui-g-8">
+          <p-menubar [model]="menuItems" [autoDisplay]="false">
+          </p-menubar>
+        </div>
     </div>
 </div>
+

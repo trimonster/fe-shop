@@ -5,12 +5,17 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ButtonModule } from 'primeng/button';
+import { BellComponent } from './bell/bell.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    MenubarModule
+    MenubarModule,
+    OverlayPanelModule,
+    ButtonModule
   ],
   exports: [
     FooterComponent,
@@ -20,7 +25,8 @@ import { MenubarModule } from 'primeng/menubar';
   declarations: [
     FooterComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    BellComponent
   ]
 })
 export class LayoutModule { }
