@@ -1,0 +1,3 @@
+export let PRODUCT = {
+  TOGGLE_PRODUCT_CODE: 'TOGGLE_PRODUCT_CODE'
+};
