@@ -12,13 +12,15 @@ export interface ProductState {
   showProductCode: boolean;
   currentProduct: Product ;
   products: Product[];
+  error: string;
 }
 
 // tslint:disable-next-line:one-variable-per-declaration
 const initProductState: ProductState = {
   showProductCode: true,
   currentProduct:  null,
-  products: []
+  products: [],
+  error : '',
 };
 
 const getProductFeatureState = createFeatureSelector<ProductState>('products');
@@ -31,6 +33,16 @@ export const getShowProductCode = createSelector(
 export const getSelectedProduct = createSelector(
   getProductFeatureState,
   state => state.currentProduct
+);
+
+export const getProducts = createSelector(
+  getProductFeatureState,
+  state => state.products
+);
+
+export const getError = createSelector(
+  getProductFeatureState,
+  state => state.error
 );
 
 export function reducer(state = initProductState, action: ProductActions): ProductState {
@@ -61,6 +73,18 @@ export function reducer(state = initProductState, action: ProductActions): Produ
           starRating: 0
         }
       };
+    case ProductActionTypes.LoadSuccess:
+      return {
+        ...state,
+        products: action.payload,
+        error: ''
+      };
+      case ProductActionTypes.LoadFail:
+        return {
+          ...state,
+          products: [],
+          error: action.payload
+        };
     default:
       return state;
   }

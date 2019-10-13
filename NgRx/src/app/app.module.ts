@@ -20,6 +20,7 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
 
 /* Feature Modules */
 import { UserModule } from './user/user.module';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { UserModule } from './user/user.module';
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(ProductData),
     StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       name: 'Learn redux',
       maxAge: 25, // Retains last 25 states

@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { Store, StoreModule, select } from '@ngrx/store';
-import { PRODUCT } from '../state/contants';
 import * as fromProduct from '../state/product.reducer';
 import * as fromProductActions from '../state/product.action';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'pm-product-list',
@@ -21,10 +21,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
   displayCode: boolean;
 
   products: Product[];
+  componentActive = true;
 
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
   sub: Subscription;
+  products$: Observable<Product[]>;
+  errorMessage$: Observable<string>;
 
   constructor(
     private store: Store<fromProduct.State>,
@@ -41,10 +44,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.selectedProduct = product;
     });
 
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => this.products = products,
-      error: (err: any) => this.errorMessage = err.error
-    });
+    // this.productService.getProducts().subscribe({
+    //   next: (products: Product[]) => this.products = products,
+    //   error: (err: any) => this.errorMessage = err.error
+    // });
+
+    this.errorMessage$ = this.store.pipe(select(fromProduct.getError));
+    this.store.dispatch(new fromProductActions.LoadProduct());
+    this.products$ = this.store.pipe(select(fromProduct.getProducts));
+      // takeWhile(() => this.componentActive)
+    // .subscribe((products: Product[]) => this.products = products);
 
     // TODO: UNSUBSCRIBE
     this.store
@@ -56,6 +65,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // this.sub.unsubscribe();
+    this.componentActive = false;
   }
 
   checkChanged(value: boolean): void {
