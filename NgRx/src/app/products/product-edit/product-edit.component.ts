@@ -58,9 +58,18 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    this.productForm = this.fb.group({
+      productName: ['', [Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50)]],
+      productCode: ['', [Validators.required]],
+      starRating: ['', NumberValidators.range(1, 5)],
+      description: ''
+    });
+
     this.store
     .pipe(select(fromProduct.getSelectedProduct))
-    .subscribe(product => {
+    .subscribe((product: Product) => {
       this.displayProduct(product);
     });
 
@@ -154,10 +163,11 @@ export class ProductEditComponent implements OnInit, OnDestroy {
             error: err => this.errorMessage = err.error
           });
         } else {
-          this.productService.updateProduct(p).subscribe({
-            next: product => this.store.dispatch(new fromProductActions.SetCurrentProduct(product)),
-            error: err => this.errorMessage = err.error
-          });
+          // this.productService.updateProduct(p).subscribe({
+          //   next: product => this.store.dispatch(new fromProductActions.SetCurrentProduct(product)),
+          //   error: err => this.errorMessage = err.error
+          // });
+          this.store.dispatch(new fromProductActions.UpdateProduct(p));
         }
       }
     } else {

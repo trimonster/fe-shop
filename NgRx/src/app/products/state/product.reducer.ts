@@ -10,7 +10,7 @@ export interface State extends fromRoot.State {
 
 export interface ProductState {
   showProductCode: boolean;
-  currentProduct: Product ;
+  currentProductId: number | null ;
   products: Product[];
   error: string;
 }
@@ -18,7 +18,7 @@ export interface ProductState {
 // tslint:disable-next-line:one-variable-per-declaration
 const initProductState: ProductState = {
   showProductCode: true,
-  currentProduct:  null,
+  currentProductId:  null,
   products: [],
   error : '',
 };
@@ -30,9 +30,27 @@ export const getShowProductCode = createSelector(
   state => state.showProductCode
 );
 
+export const getSelectedProductId = createSelector(
+  getProductFeatureState,
+  state => state.currentProductId
+);
+
 export const getSelectedProduct = createSelector(
   getProductFeatureState,
-  state => state.currentProduct
+  getSelectedProductId,
+  (state, currentProductId) => {
+    if (currentProductId === 0) {
+      return {
+        id: 0,
+        productName: 'New',
+        productCode: 0,
+        description: '',
+        starRating: 0
+      };
+    } else {
+      return currentProductId ? state.products.find(p => p.id === currentProductId) : null;
+    }
+  }
 );
 
 export const getProducts = createSelector(
@@ -55,23 +73,17 @@ export function reducer(state = initProductState, action: ProductActions): Produ
     case ProductActionTypes.SetCurrentProduct:
       return {
         ...state,
-        currentProduct: {...action.payload}
+        currentProductId: action.payload.id
       };
     case ProductActionTypes.ClearCurrentProduct:
       return {
         ...state,
-        currentProduct: null
+        currentProductId: null
       };
     case ProductActionTypes.InitializeCurrentProduct:
       return {
         ...state,
-        currentProduct: {
-          id: 0,
-          productName: '',
-          productCode: 'New',
-          description: '',
-          starRating: 0
-        }
+        currentProductId: 0
       };
     case ProductActionTypes.LoadSuccess:
       return {
@@ -79,12 +91,26 @@ export function reducer(state = initProductState, action: ProductActions): Produ
         products: action.payload,
         error: ''
       };
-      case ProductActionTypes.LoadFail:
-        return {
-          ...state,
-          products: [],
-          error: action.payload
-        };
+    case ProductActionTypes.LoadFail:
+      return {
+        ...state,
+        products: [],
+        error: action.payload
+      };
+    case ProductActionTypes.UpdateProductSuccess:
+      const updatedProducts = state.products.map(item => action.payload.id === item.id ? action.payload : item);
+      return {
+        ...state,
+        products: updatedProducts,
+        currentProductId: action.payload.id,
+        error: ''
+      };
+    case ProductActionTypes.UpdateProductFail:
+      return {
+        ...state,
+        products: [],
+        error: action.payload
+      };
     default:
       return state;
   }

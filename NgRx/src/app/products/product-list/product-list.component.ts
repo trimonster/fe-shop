@@ -40,7 +40,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // );
     this.store
     .pipe(select(fromProduct.getSelectedProduct))
-    .subscribe(product => {
+    .subscribe((product: Product) => {
       this.selectedProduct = product;
     });
 
